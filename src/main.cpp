@@ -1,22 +1,31 @@
 /*
-Controle de volume sur Raspberry Pi Pico
-Prérequis : Voir le fichier platformio.ini
+Volume Control on Raspberry Pi Pico
+Prerequisites: See the platformio.ini file
 
-Connexions :
+Wiring:
 
 +----------------+----------------+
-| Rotary encoder  | Raspberry Pico |
+| Rotary encoder  | Raspberry Pico|
 +----------------+----------------+
 | CLK            | GP20           |
 +----------------+----------------+
 | DT             | GP21           |
 +----------------+----------------+
-| SW             | GP22           |
+| SW             | not used       |
 +----------------+----------------+
 | +              | 3V3            |
 +----------------+----------------+
 | GND            | GND            |
 +----------------+----------------+
+
+buttons
++-------------+------+
+| NAME        | GPIO |
++-------------+------+
+| SW_PIN1     | 2    |
++-------------+------+
+| PIN_BUTTON2 | 9    |
++-------------+------+
 
 */
 
@@ -132,20 +141,20 @@ void sendHIDCommand(uint16_t reportID, uint16_t command)
 void playPause()
 {
   sendHIDCommand(RID_CONSUMER_CONTROL, HID_USAGE_CONSUMER_PLAY_PAUSE);
-  Serial.println("playPause");
+  
 }
 
 // Next media track control
 void mediaNext()
 {
   sendHIDCommand(RID_CONSUMER_CONTROL, HID_USAGE_CONSUMER_SCAN_NEXT);
-  Serial.println("mediaNext");
+  
 }
 
 // Move right (arrow key)
 void moveRight()
 {
-  Serial.println("Right Arrow");
+  
   uint8_t keycode[6] = {HID_KEY_ARROW_RIGHT};
   usb_hid.keyboardReport(RID_KEYBOARD, 0, keycode);
   delay(50);
@@ -155,7 +164,7 @@ void moveRight()
 // Move left (arrow key)
 void moveLeft()
 {
-  Serial.println("Left Arrow");
+  
   uint8_t keycode[6] = {HID_KEY_ARROW_LEFT};
   usb_hid.keyboardReport(RID_KEYBOARD, 0, keycode);
   delay(50);
@@ -176,6 +185,5 @@ void changeMode()
     digitalWrite(LED_MODE, LOW);
   }
 
-  Serial.print("Change Mode: ");
-  Serial.println(currentMode);
+  
 }
